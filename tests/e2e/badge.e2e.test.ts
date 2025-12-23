@@ -12,7 +12,7 @@ const cacheService = {
 const fundingService = {
   getFundingData: vi.fn().mockResolvedValue({
     platform: 'github',
-    username: 'sindresorhus',
+    username: 'mrdeiviz',
     currentAmount: 2500,
     currency: 'USD',
     isRecurring: true,
@@ -77,7 +77,7 @@ describe('Badge routes (e2e)', () => {
   it('returns an SVG badge with default label', async () => {
     const response = await server.inject({
       method: 'GET',
-      url: '/badge/github/sindresorhus/5000',
+      url: '/badge/github/mrdeiviz/5000',
     });
 
     expect(response.statusCode).toBe(200);
@@ -89,7 +89,7 @@ describe('Badge routes (e2e)', () => {
   it('returns a badge with custom label and style', async () => {
     const response = await server.inject({
       method: 'GET',
-      url: '/badge/github/sindresorhus/5000?style=flat-square&label=Maintenance%20Fund',
+      url: '/badge/github/mrdeiviz/5000?style=flat-square&label=Maintenance%20Fund',
     });
 
     expect(response.statusCode).toBe(200);
