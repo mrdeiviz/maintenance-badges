@@ -5,30 +5,30 @@ import type { FundingData, Platform } from '../../../src/types/funding-data.type
 // Mock dependencies
 const { mockCacheService, mockTokenStorage, mockProvider, mockLogger, mockConfig } = vi.hoisted(() => ({
   mockCacheService: {
-    get: vi.fn(),
-    set: vi.fn(),
-    del: vi.fn(),
-    ping: vi.fn(),
-    getMetrics: vi.fn(),
-    close: vi.fn(),
+    get: vi.fn(() => {}),
+    set: vi.fn(() => {}),
+    del: vi.fn(() => {}),
+    ping: vi.fn(() => {}),
+    getMetrics: vi.fn(() => {}),
+    close: vi.fn(() => {}),
   },
   mockTokenStorage: {
-    getUserToken: vi.fn(),
-    saveUserToken: vi.fn(),
-    deleteUserToken: vi.fn(),
-    hasToken: vi.fn(),
+    getUserToken: vi.fn(() => {}),
+    saveUserToken: vi.fn(() => {}),
+    deleteUserToken: vi.fn(() => {}),
+    hasToken: vi.fn(() => {}),
   },
   mockProvider: {
     platform: 'github',
-    getFundingData: vi.fn(),
-    getRateLimitInfo: vi.fn(),
-    validateUsername: vi.fn(),
+    getFundingData: vi.fn(() => {}),
+    getRateLimitInfo: vi.fn(() => {}),
+    validateUsername: vi.fn(() => {}),
   },
   mockLogger: {
-    debug: vi.fn(),
-    info: vi.fn(),
-    warn: vi.fn(),
-    error: vi.fn(),
+    debug: vi.fn(() => {}),
+    info: vi.fn(() => {}),
+    warn: vi.fn(() => {}),
+    error: vi.fn(() => {}),
   },
   mockConfig: {
     cache: {
@@ -46,11 +46,11 @@ vi.mock('../../../src/services/cache.service.js', () => ({
 }));
 
 vi.mock('../../../src/services/token-storage.service.js', () => ({
-  TokenStorageService: vi.fn(() => mockTokenStorage),
+  TokenStorageService: vi.fn(function() { return mockTokenStorage }),
 }));
 
 vi.mock('../../../src/providers/github-sponsors.provider.js', () => ({
-  GitHubSponsorsProvider: vi.fn(() => mockProvider),
+  GitHubSponsorsProvider: vi.fn(function() { return mockProvider }),
 }));
 
 vi.mock('../../../src/core/logger.js', () => ({
