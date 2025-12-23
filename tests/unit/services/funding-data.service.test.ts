@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { FundingDataService } from '../../../src/services/funding-data.service';
+import type { FundingDataService as FundingDataServiceType } from '../../../src/services/funding-data.service';
 import type { FundingData, Platform } from '../../../src/types/funding-data.types';
 
 // Mock dependencies
@@ -62,7 +62,8 @@ vi.mock('../../../src/core/config.js', () => ({
 }));
 
 describe('FundingDataService', () => {
-  let service: FundingDataService;
+  let FundingDataService: typeof import('../../../src/services/funding-data.service').FundingDataService;
+  let service: FundingDataServiceType;
 
   const mockFundingData: FundingData = {
     platform: 'github' as Platform,
@@ -74,13 +75,14 @@ describe('FundingDataService', () => {
     lastUpdated: new Date('2024-01-01T00:00:00.000Z'),
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    ({ FundingDataService } = await import('../../../src/services/funding-data.service.js'));
     service = new FundingDataService();
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('getFundingData', () => {

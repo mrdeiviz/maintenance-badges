@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { CacheService } from '../../../src/services/cache.service';
+import type { CacheService as CacheServiceType } from '../../../src/services/cache.service';
 
 // Mock Redis
 const { mockRedis, mockLogger, mockConfig } = vi.hoisted(() => ({
@@ -41,15 +41,17 @@ vi.mock('../../../src/core/logger.js', () => ({
 }));
 
 describe('CacheService', () => {
-  let service: CacheService;
+  let CacheService: typeof import('../../../src/services/cache.service').CacheService;
+  let service: CacheServiceType;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    ({ CacheService } = await import('../../../src/services/cache.service.js'));
     service = new CacheService();
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('get', () => {

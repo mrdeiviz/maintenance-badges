@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { TokenStorageService } from '../../../src/services/token-storage.service';
+import type { TokenStorageService as TokenStorageServiceType } from '../../../src/services/token-storage.service';
 
 // Mock Prisma Client
 const { mockPrismaClient, mockEncryptionService, mockLogger, mockConfig, mockPool } = vi.hoisted(() => ({
@@ -58,15 +58,17 @@ vi.mock('../../../src/core/config.js', () => ({
 }));
 
 describe('TokenStorageService', () => {
-  let service: TokenStorageService;
+  let TokenStorageService: typeof import('../../../src/services/token-storage.service').TokenStorageService;
+  let service: TokenStorageServiceType;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    ({ TokenStorageService } = await import('../../../src/services/token-storage.service.js'));
     service = new TokenStorageService();
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('saveUserToken', () => {

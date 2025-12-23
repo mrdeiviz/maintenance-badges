@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { GitHubSponsorsProvider } from '../../../src/providers/github-sponsors.provider';
+import type { GitHubSponsorsProvider as GitHubSponsorsProviderType } from '../../../src/providers/github-sponsors.provider';
 
 const { mockGraphql, mockGraphqlDefaults } = vi.hoisted(() => {
   const mockGraphql = vi.fn();
@@ -35,7 +35,8 @@ vi.mock('../../../src/core/config.js', () => ({
 }));
 
 describe('GitHubSponsorsProvider', () => {
-  let provider: GitHubSponsorsProvider;
+  let GitHubSponsorsProvider: typeof import('../../../src/providers/github-sponsors.provider').GitHubSponsorsProvider;
+  let provider: GitHubSponsorsProviderType;
 
   const mockSponsorshipData = {
     user: {
@@ -51,14 +52,16 @@ describe('GitHubSponsorsProvider', () => {
     },
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    ({ GitHubSponsorsProvider } = await import('../../../src/providers/github-sponsors.provider.js'));
     provider = new GitHubSponsorsProvider();
     mockGraphqlDefaults.mockReturnValue(mockGraphql);
+    mockConfig.github.token = 'test-github-token';
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('validateUsername', () => {
@@ -305,14 +308,15 @@ describe('GitHubSponsorsProvider', () => {
     });
 
     it('should throw error when GitHub token is not configured', async () => {
-      vi.mocked(mockConfig).github.token = undefined as any;
+      mockConfig.github.token = undefined as any;
 
-      expect(() => new GitHubSponsorsProvider()).toThrow(
+      await expect(provider.getRateLimitInfo()).rejects.toThrow(
         'GitHub token is required for rate limit checks'
       );
     });
 
     it('should log and rethrow errors', async () => {
+      mockConfig.github.token = 'test-github-token';
       const error = new Error('API error');
       mockGraphql.mockRejectedValue(error);
 
