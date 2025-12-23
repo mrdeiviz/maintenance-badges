@@ -4,18 +4,18 @@ import type { CacheService as CacheServiceType } from '../../../src/services/cac
 // Mock Redis
 const { mockRedis, mockLogger, mockConfig } = vi.hoisted(() => ({
   mockRedis: {
-    get: vi.fn(),
-    setex: vi.fn(),
-    del: vi.fn(),
-    ping: vi.fn(),
-    quit: vi.fn(),
-    on: vi.fn(),
+    get: vi.fn(() => {}),
+    setex: vi.fn(() => {}),
+    del: vi.fn(() => {}),
+    ping: vi.fn(() => {}),
+    quit: vi.fn(() => {}),
+    on: vi.fn(() => {}),
   },
   mockLogger: {
-    debug: vi.fn(),
-    info: vi.fn(),
-    warn: vi.fn(),
-    error: vi.fn(),
+    debug: vi.fn(() => {}),
+    info: vi.fn(() => {}),
+    warn: vi.fn(() => {}),
+    error: vi.fn(() => {}),
   },
   mockConfig: {
     cache: {
@@ -29,7 +29,7 @@ const { mockRedis, mockLogger, mockConfig } = vi.hoisted(() => ({
 }));
 
 vi.mock('ioredis', () => ({
-  default: vi.fn().mockImplementation(() => mockRedis),
+  default: vi.fn(function() {}).mockImplementation(function() { return mockRedis }),
 }));
 
 vi.mock('../../../src/core/config.js', () => ({

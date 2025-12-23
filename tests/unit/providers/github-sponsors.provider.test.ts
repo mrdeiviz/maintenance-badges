@@ -2,16 +2,16 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import type { GitHubSponsorsProvider as GitHubSponsorsProviderType } from '../../../src/providers/github-sponsors.provider';
 
 const { mockGraphql, mockGraphqlDefaults } = vi.hoisted(() => {
-  const mockGraphql = vi.fn();
+  const mockGraphql = vi.fn(() => {});
   const mockGraphqlDefaults = vi.fn(() => mockGraphql);
   return { mockGraphql, mockGraphqlDefaults };
 });
 
 const mockLogger = {
-  debug: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  error: vi.fn(),
+  debug: vi.fn(() => {}),
+  info: vi.fn(() => {}),
+  warn: vi.fn(() => {}),
+  error: vi.fn(() => {}),
 };
 
 const mockConfig = {

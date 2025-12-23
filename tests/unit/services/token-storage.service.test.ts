@@ -5,11 +5,11 @@ import type { TokenStorageService as TokenStorageServiceType } from '../../../sr
 const { mockPrismaClient, mockEncryptionService, mockLogger, mockConfig, mockPool } = vi.hoisted(() => ({
   mockPrismaClient: {
     userToken: {
-      upsert: vi.fn(),
-      findUnique: vi.fn(),
-      update: vi.fn(),
-      delete: vi.fn(),
-      count: vi.fn(),
+      upsert: vi.fn(() => {}),
+      findUnique: vi.fn(() => {}),
+      update: vi.fn(() => {}),
+      delete: vi.fn(() => {}),
+      count: vi.fn(() => {}),
     },
   },
   mockEncryptionService: {
@@ -17,10 +17,10 @@ const { mockPrismaClient, mockEncryptionService, mockLogger, mockConfig, mockPoo
     decrypt: vi.fn((text: string) => text.replace('encrypted_', '')),
   },
   mockLogger: {
-    debug: vi.fn(),
-    info: vi.fn(),
-    warn: vi.fn(),
-    error: vi.fn(),
+    debug: vi.fn(() => {}),
+    info: vi.fn(() => {}),
+    warn: vi.fn(() => {}),
+    error: vi.fn(() => {}),
   },
   mockConfig: {
     database: {
@@ -28,25 +28,25 @@ const { mockPrismaClient, mockEncryptionService, mockLogger, mockConfig, mockPoo
     },
   },
   mockPool: {
-    connect: vi.fn(),
-    end: vi.fn(),
+    connect: vi.fn(() => {}),
+    end: vi.fn(() => {}),
   },
 }));
 
 vi.mock('@prisma/client', () => ({
-  PrismaClient: vi.fn(() => mockPrismaClient),
+  PrismaClient: vi.fn(function() { return mockPrismaClient }),
 }));
 
 vi.mock('@prisma/adapter-pg', () => ({
-  PrismaPg: vi.fn(() => ({})),
+  PrismaPg: vi.fn(function() { return {} }),
 }));
 
 vi.mock('pg', () => ({
-  Pool: vi.fn(() => mockPool),
+  Pool: vi.fn(function() { return mockPool }),
 }));
 
 vi.mock('../../../src/services/encryption.service.js', () => ({
-  EncryptionService: vi.fn(() => mockEncryptionService),
+  EncryptionService: vi.fn(function() { return mockEncryptionService }),
 }));
 
 vi.mock('../../../src/core/logger.js', () => ({
