@@ -1,4 +1,4 @@
-# Maintenance Badge 💰
+# Maintenance Badges
 
 **Show your GitHub Sponsors progress with beautiful, dynamic badges**
 
@@ -21,20 +21,20 @@
 
 ---
 
-## 🎯 What is this?
+## What is this?
 
 Display your GitHub Sponsors progress directly in your README with automatically updating badges. Perfect for open source projects that want to show their funding goals and progress.
 
 **Why use this?**
 - 📊 Show real-time progress towards your funding goals
-- 🎨 Looks great with automatic color changes (red → orange → yellow → yellowgreen → brightgreen → blue → purple)
-- 🔄 Updates roughly every 5 minutes (longer if API rate limits are low)
+- 🎨 Looks great with automatic color changes (red → orange → yellow → green)
+- 🔄 Updates automatically every 5 minutes
 - 🆓 Completely free and open source
 - 🔒 Secure OAuth - no tokens to manage manually
 
 ---
 
-## 🚀 Get Started in 2 Minutes
+## Get Started in 2 Minutes
 
 ### 1️⃣ Connect Your GitHub Account
 
