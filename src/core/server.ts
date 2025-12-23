@@ -3,7 +3,7 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import { getConfig } from './config.js';
-import { getLogger } from './logger.js';
+import { createLogger, getLogger } from './logger.js';
 import { badgeRoutes } from '../routes/badge.routes.js';
 import { healthRoutes } from '../routes/health.routes.js';
 import { debugRoutes } from '../routes/debug.routes.js';
@@ -15,6 +15,7 @@ import { createFundingDataService } from '../services/funding-data.service.js';
 
 export async function createServer() {
   const config = getConfig();
+  createLogger();
 
   // Initialize services
   createCacheService();
