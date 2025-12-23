@@ -24,6 +24,19 @@ vi.mock('../../src/services/funding-data.service.ts', () => ({
   getFundingDataService: () => fundingDataService,
 }));
 
+vi.mock('../../src/services/token-storage.service.ts', () => ({
+  TokenStorageService: class {
+    async saveUserToken() {}
+    async getUserToken() {
+      return 'test-token';
+    }
+    async deleteUserToken() {}
+    async hasToken() {
+      return true;
+    }
+  },
+}));
+
 vi.mock('../../src/providers/github-sponsors.provider.ts', () => ({
   GitHubSponsorsProvider: class {
     async getRateLimitInfo() {
