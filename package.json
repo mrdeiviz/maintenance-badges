@@ -1,0 +1,62 @@
+{
+  "name": "maintenance-badge",
+  "version": "0.1.0",
+  "description": "Dynamic SVG badges for open source maintenance funds - Twitch-style progress tracking for GitHub Sponsors",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "check": "node scripts/check-setup.js",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "keywords": [
+    "github-sponsors",
+    "maintenance",
+    "upkeep",
+    "funding",
+    "badge",
+    "open-source",
+    "sponsorship",
+    "svg"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "@fastify/helmet": "^12.0.1",
+    "@fastify/rate-limit": "^10.1.1",
+    "@octokit/graphql": "^8.1.1",
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
+    "badge-maker": "^4.0.0",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^17.2.3",
+    "fastify": "^5.2.0",
+    "ioredis": "^5.4.1",
+    "pg": "^8.13.3",
+    "pino": "^9.5.0",
+    "pino-pretty": "^13.0.0",
+    "stripe": "^17.3.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "prisma": "^7.2.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

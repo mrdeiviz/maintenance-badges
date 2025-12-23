@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma/client/.prisma/client"
+  engineType = "binary"
+}
+
+model UserToken {
+  id               String   @id @default(cuid())
+  githubUsername   String   @unique
+  githubUserId     String   @unique
+  accessToken      String   // Encrypted
+  tokenType        String   @default("bearer")
+  scope            String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  lastUsedAt       DateTime @default(now())
+  expiresAt        DateTime? // For fine-grained tokens
+
+  @@index([githubUsername])
+  @@index([lastUsedAt])
+  @@map("user_tokens")
+}
