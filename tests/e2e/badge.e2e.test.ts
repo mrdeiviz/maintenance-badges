@@ -1,16 +1,16 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 const cacheService = {
-  get: vi.fn().mockResolvedValue(null),
-  set: vi.fn().mockResolvedValue(undefined),
-  del: vi.fn().mockResolvedValue(undefined),
-  ping: vi.fn().mockResolvedValue(true),
-  getMetrics: vi.fn().mockReturnValue({ hits: 0, misses: 0, total: 0, hitRate: '0.00%' }),
-  close: vi.fn().mockResolvedValue(undefined),
+  get: vi.fn(() => {}).mockResolvedValue(null),
+  set: vi.fn(() => {}).mockResolvedValue(undefined),
+  del: vi.fn(() => {}).mockResolvedValue(undefined),
+  ping: vi.fn(() => {}).mockResolvedValue(true),
+  getMetrics: vi.fn(() => {}).mockReturnValue({ hits: 0, misses: 0, total: 0, hitRate: '0.00%' }),
+  close: vi.fn(() => {}).mockResolvedValue(undefined),
 };
 
 const fundingService = {
-  getFundingData: vi.fn().mockResolvedValue({
+  getFundingData: vi.fn(() => {}).mockResolvedValue({
     platform: 'github',
     username: 'mrdeiviz',
     currentAmount: 2500,
@@ -19,7 +19,7 @@ const fundingService = {
     breakdown: { sponsors: 42 },
     lastUpdated: new Date(),
   }),
-  getSupportedPlatforms: vi.fn().mockReturnValue(['github']),
+  getSupportedPlatforms: vi.fn(() => {}).mockReturnValue(['github']),
 };
 
 vi.mock('../../src/services/cache.service.js', () => ({

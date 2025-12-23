@@ -1,17 +1,17 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 const cacheService = {
-  get: vi.fn().mockResolvedValue(null),
-  set: vi.fn().mockResolvedValue(undefined),
-  del: vi.fn().mockResolvedValue(undefined),
-  ping: vi.fn().mockResolvedValue(true),
-  getMetrics: vi.fn().mockReturnValue({ hits: 1, misses: 0, total: 1, hitRate: '100.00%' }),
-  close: vi.fn().mockResolvedValue(undefined),
+  get: vi.fn(() => {}).mockResolvedValue(null),
+  set: vi.fn(() => {}).mockResolvedValue(undefined),
+  del: vi.fn(() => {}).mockResolvedValue(undefined),
+  ping: vi.fn(() => {}).mockResolvedValue(true),
+  getMetrics: vi.fn(() => {}).mockReturnValue({ hits: 1, misses: 0, total: 1, hitRate: '100.00%' }),
+  close: vi.fn(() => {}).mockResolvedValue(undefined),
 };
 
 const fundingDataService = {
-  getFundingData: vi.fn(),
-  getSupportedPlatforms: vi.fn().mockReturnValue(['github']),
+  getFundingData: vi.fn(() => {}),
+  getSupportedPlatforms: vi.fn(() => {}).mockReturnValue(['github']),
 };
 
 vi.mock('../../src/services/cache.service.js', () => ({
