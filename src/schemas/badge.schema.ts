@@ -27,8 +27,8 @@ export const BadgeQuerySchema = z.object({
     .optional(),
   refresh: z
     .enum(["true", "false", "1", "0"])
-    .transform((val) => val === "true" || val === "1")
-    .default("false"),
+    .default("false")
+    .transform((val) => val === "true" || val === "1"),
   demo: z
     .enum(["true", "false", "1", "0"])
     .transform((val) => val === "true" || val === "1")
