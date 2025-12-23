@@ -27,8 +27,18 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Check formatting
+        run: npx prettier --check "src/**/*.ts"
+
+      - name: Type check
+        run: npx tsc --noEmit
+
       - name: Test
         run: npm run test
+
+      - name: Security audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
 
       - name: Build
         run: npm run build

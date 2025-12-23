@@ -1,10 +1,10 @@
-import type { BaseFundingProvider } from '../providers/base.provider.js';
-import { GitHubSponsorsProvider } from '../providers/github-sponsors.provider.js';
-import type { FundingData, Platform } from '../types/funding-data.types.js';
-import { getCacheService } from './cache.service.js';
-import { TokenStorageService } from './token-storage.service.js';
-import { getLogger } from '../core/logger.js';
-import { getConfig } from '../core/config.js';
+import type { BaseFundingProvider } from "../providers/base.provider.js";
+import { GitHubSponsorsProvider } from "../providers/github-sponsors.provider.js";
+import type { FundingData, Platform } from "../types/funding-data.types.js";
+import { getCacheService } from "./cache.service.js";
+import { TokenStorageService } from "./token-storage.service.js";
+import { getLogger } from "../core/logger.js";
+import { getConfig } from "../core/config.js";
 
 export class FundingDataService {
   private providers = new Map<Platform, BaseFundingProvider>();
@@ -18,11 +18,15 @@ export class FundingDataService {
 
   constructor() {
     // Register providers (MVP: GitHub Sponsors only)
-    this.providers.set('github', new GitHubSponsorsProvider());
+    this.providers.set("github", new GitHubSponsorsProvider());
     this.tokenStorage = new TokenStorageService();
   }
 
-  async getFundingData(platform: Platform, username: string, bypassCache = false): Promise<FundingData> {
+  async getFundingData(
+    platform: Platform,
+    username: string,
+    bypassCache = false,
+  ): Promise<FundingData> {
     const provider = this.providers.get(platform);
 
     if (!provider) {
@@ -36,12 +40,15 @@ export class FundingDataService {
     if (!bypassCache) {
       const cached = await this.cacheService.get<FundingData>(cacheKey);
       if (cached) {
-        this.logger.debug({ platform, username }, 'Cache hit for funding data');
+        this.logger.debug({ platform, username }, "Cache hit for funding data");
         return cached;
       }
     }
 
-    this.logger.debug({ platform, username }, 'Cache miss, fetching from provider');
+    this.logger.debug(
+      { platform, username },
+      "Cache miss, fetching from provider",
+    );
 
     // **NEW:** Fetch user's OAuth token
     const userToken = await this.tokenStorage.getUserToken(username);
@@ -49,7 +56,7 @@ export class FundingDataService {
     if (!userToken) {
       throw new Error(
         `User ${username} has not authorized this service. ` +
-        `Please visit /auth/github to connect your GitHub account.`
+          `Please visit /auth/github to connect your GitHub account.`,
       );
     }
 
@@ -67,11 +74,14 @@ export class FundingDataService {
           ttl = config.cache.maxTTL;
           this.logger.warn(
             { platform, remaining: rateLimitInfo.remaining },
-            'Low rate limit, extending cache TTL'
+            "Low rate limit, extending cache TTL",
           );
         }
       } catch (error) {
-        this.logger.warn({ error }, 'Failed to get rate limit info, using default TTL');
+        this.logger.warn(
+          { error },
+          "Failed to get rate limit info, using default TTL",
+        );
       }
 
       // Cache the result
@@ -79,7 +89,10 @@ export class FundingDataService {
 
       return data;
     } catch (error: any) {
-      this.logger.error({ error, platform, username }, 'Failed to fetch funding data');
+      this.logger.error(
+        { error, platform, username },
+        "Failed to fetch funding data",
+      );
       throw error;
     }
   }
@@ -100,7 +113,7 @@ export function createFundingDataService(): FundingDataService {
 
 export function getFundingDataService(): FundingDataService {
   if (!fundingDataServiceInstance) {
-    throw new Error('Funding data service not initialized.');
+    throw new Error("Funding data service not initialized.");
   }
   return fundingDataServiceInstance;
 }

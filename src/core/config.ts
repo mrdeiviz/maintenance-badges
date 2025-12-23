@@ -1,36 +1,40 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const ConfigSchema = z.object({
-  nodeEnv: z.enum(['development', 'production', 'test']).default('development'),
+  nodeEnv: z.enum(["development", "production", "test"]).default("development"),
   port: z.coerce.number().positive().default(3000),
-  host: z.string().default('0.0.0.0'),
-  logLevel: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
+  host: z.string().default("0.0.0.0"),
+  logLevel: z
+    .enum(["fatal", "error", "warn", "info", "debug", "trace"])
+    .default("info"),
 
   github: z.object({
-    token: z.string().min(1, 'GitHub token is required'), // Keep for backwards compatibility
+    token: z.string().min(1, "GitHub token is required"), // Keep for backwards compatibility
     apiTimeout: z.coerce.number().positive().default(10000),
     oauth: z.object({
-      clientId: z.string().min(1, 'GitHub OAuth Client ID is required'),
-      clientSecret: z.string().min(1, 'GitHub OAuth Client Secret is required'),
-      callbackUrl: z.string().url('Callback URL must be valid'),
+      clientId: z.string().min(1, "GitHub OAuth Client ID is required"),
+      clientSecret: z.string().min(1, "GitHub OAuth Client Secret is required"),
+      callbackUrl: z.string().url("Callback URL must be valid"),
     }),
   }),
 
   database: z.object({
-    url: z.string().min(1, 'Database URL is required'),
+    url: z.string().min(1, "Database URL is required"),
   }),
 
   encryption: z.object({
-    secretKey: z.string().min(32, 'Encryption secret must be at least 32 characters'),
+    secretKey: z
+      .string()
+      .min(32, "Encryption secret must be at least 32 characters"),
   }),
 
   session: z.object({
-    secret: z.string().min(32, 'Session secret must be at least 32 characters'),
+    secret: z.string().min(32, "Session secret must be at least 32 characters"),
     cookieDomain: z.string().optional(),
   }),
 
   redis: z.object({
-    url: z.string().url('Redis URL must be valid'),
+    url: z.string().url("Redis URL must be valid"),
     password: z.string().optional(),
   }),
 
@@ -44,17 +48,22 @@ const ConfigSchema = z.object({
     window: z.coerce.number().positive().default(60000), // 1 minute
   }),
 
-  sentry: z.object({
-    dsn: z.string().optional(),
-    environment: z.string().default('development'),
-  }).optional(),
+  sentry: z
+    .object({
+      dsn: z.string().optional(),
+      environment: z.string().default("development"),
+    })
+    .optional(),
 
   cors: z.object({
-    allowedOrigins: z.string().default('*'),
+    allowedOrigins: z.string().default("*"),
   }),
 
-  publicBaseUrl: z.string().url('Public base URL must be valid').optional(),
-  badgeExampleUsername: z.string().min(1, 'Badge example username must be valid').optional(),
+  publicBaseUrl: z.string().url("Public base URL must be valid").optional(),
+  badgeExampleUsername: z
+    .string()
+    .min(1, "Badge example username must be valid")
+    .optional(),
 });
 
 export type Config = z.infer<typeof ConfigSchema>;
@@ -110,10 +119,12 @@ export function loadConfig(): Config {
       window: process.env.RATE_LIMIT_WINDOW,
     },
 
-    sentry: process.env.SENTRY_DSN ? {
-      dsn: process.env.SENTRY_DSN,
-      environment: process.env.SENTRY_ENVIRONMENT,
-    } : undefined,
+    sentry: process.env.SENTRY_DSN
+      ? {
+          dsn: process.env.SENTRY_DSN,
+          environment: process.env.SENTRY_ENVIRONMENT,
+        }
+      : undefined,
 
     cors: {
       allowedOrigins: process.env.ALLOWED_ORIGINS,
@@ -124,7 +135,7 @@ export function loadConfig(): Config {
   });
 
   if (!config.success) {
-    console.error('❌ Invalid configuration:');
+    console.error("❌ Invalid configuration:");
     console.error(JSON.stringify(config.error.format(), null, 2));
     process.exit(1);
   }
@@ -135,7 +146,7 @@ export function loadConfig(): Config {
 
 export function getConfig(): Config {
   if (!configInstance) {
-    throw new Error('Configuration not loaded. Call loadConfig() first.');
+    throw new Error("Configuration not loaded. Call loadConfig() first.");
   }
   return configInstance;
 }

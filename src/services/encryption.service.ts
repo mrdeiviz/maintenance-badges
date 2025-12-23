@@ -1,5 +1,5 @@
-import CryptoJS from 'crypto-js';
-import { getConfig } from '../core/config.js';
+import CryptoJS from "crypto-js";
+import { getConfig } from "../core/config.js";
 
 export class EncryptionService {
   private getSecretKey(): string {
@@ -7,7 +7,7 @@ export class EncryptionService {
     const secretKey = config.encryption.secretKey;
 
     if (secretKey.length < 32) {
-      throw new Error('ENCRYPTION_SECRET must be at least 32 characters');
+      throw new Error("ENCRYPTION_SECRET must be at least 32 characters");
     }
 
     return secretKey;

@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
-import { EncryptionService } from './encryption.service.js';
-import { getConfig } from '../core/config.js';
-import { getLogger } from '../core/logger.js';
+import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+import { EncryptionService } from "./encryption.service.js";
+import { getConfig } from "../core/config.js";
+import { getLogger } from "../core/logger.js";
 
 let prismaClient: PrismaClient | null = null;
 let prismaPool: Pool | null = null;
@@ -55,7 +55,7 @@ export class TokenStorageService {
       },
     });
 
-    this.logger.info({ username: data.githubUsername }, 'User token saved');
+    this.logger.info({ username: data.githubUsername }, "User token saved");
   }
 
   async getUserToken(githubUsername: string): Promise<string | null> {
@@ -81,7 +81,7 @@ export class TokenStorageService {
       where: { githubUsername },
     });
 
-    this.logger.info({ username: githubUsername }, 'User token deleted');
+    this.logger.info({ username: githubUsername }, "User token deleted");
   }
 
   async hasToken(githubUsername: string): Promise<boolean> {

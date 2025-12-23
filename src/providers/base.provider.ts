@@ -1,9 +1,15 @@
-import type { FundingData, RateLimitInfo } from '../types/funding-data.types.js';
+import type {
+  FundingData,
+  RateLimitInfo,
+} from "../types/funding-data.types.js";
 
 export abstract class BaseFundingProvider {
   abstract platform: string;
 
-  abstract getFundingData(username: string, token?: string): Promise<FundingData>;
+  abstract getFundingData(
+    username: string,
+    token?: string,
+  ): Promise<FundingData>;
 
   abstract validateUsername(username: string): boolean;
 
@@ -12,7 +18,7 @@ export abstract class BaseFundingProvider {
   protected async fetchWithRetry<T>(
     fn: () => Promise<T>,
     retries = 3,
-    baseDelay = 1000
+    baseDelay = 1000,
   ): Promise<T> {
     for (let i = 0; i < retries; i++) {
       try {
@@ -24,7 +30,7 @@ export abstract class BaseFundingProvider {
         await this.sleep(delay);
       }
     }
-    throw new Error('Max retries exceeded');
+    throw new Error("Max retries exceeded");
   }
 
   protected sleep(ms: number): Promise<void> {

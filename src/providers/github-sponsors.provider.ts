@@ -1,8 +1,11 @@
-import { graphql } from '@octokit/graphql';
-import { BaseFundingProvider } from './base.provider.js';
-import type { FundingData, RateLimitInfo } from '../types/funding-data.types.js';
-import { getConfig } from '../core/config.js';
-import { getLogger } from '../core/logger.js';
+import { graphql } from "@octokit/graphql";
+import { BaseFundingProvider } from "./base.provider.js";
+import type {
+  FundingData,
+  RateLimitInfo,
+} from "../types/funding-data.types.js";
+import { getConfig } from "../core/config.js";
+import { getLogger } from "../core/logger.js";
 
 interface GitHubSponsorshipData {
   user: {
@@ -35,7 +38,7 @@ const SPONSORS_QUERY = `
 `;
 
 export class GitHubSponsorsProvider extends BaseFundingProvider {
-  platform = 'github';
+  platform = "github";
   private logger = getLogger();
 
   constructor() {
@@ -53,7 +56,7 @@ export class GitHubSponsorsProvider extends BaseFundingProvider {
   private getApiToken(): string {
     const config = getConfig();
     if (!config.github.token) {
-      throw new Error('GitHub token is required for rate limit checks');
+      throw new Error("GitHub token is required for rate limit checks");
     }
     return config.github.token;
   }
@@ -64,10 +67,10 @@ export class GitHubSponsorsProvider extends BaseFundingProvider {
     }
 
     if (!token) {
-      throw new Error('GitHub token is required for this user');
+      throw new Error("GitHub token is required for this user");
     }
 
-    this.logger.debug({ username }, 'Fetching GitHub Sponsors data');
+    this.logger.debug({ username }, "Fetching GitHub Sponsors data");
 
     const graphqlClient = this.createGraphQLClient(token);
     const data = await this.getSponsorsData(username, graphqlClient);
@@ -81,15 +84,17 @@ export class GitHubSponsorsProvider extends BaseFundingProvider {
     if (!data.user.sponsorshipsAsMaintainer) {
       throw new Error(
         `Cannot access sponsor data for ${username}. ` +
-        `The provided token does not have permission to view this user's sponsors.`
+          `The provided token does not have permission to view this user's sponsors.`,
       );
     }
 
     return {
-      platform: 'github',
+      platform: "github",
       username,
-      currentAmount: data.user.sponsorshipsAsMaintainer.totalRecurringMonthlyPriceInCents / 100,
-      currency: 'USD',
+      currentAmount:
+        data.user.sponsorshipsAsMaintainer.totalRecurringMonthlyPriceInCents /
+        100,
+      currency: "USD",
       isRecurring: true,
       breakdown: {
         sponsors: data.user.sponsorshipsAsMaintainer.totalCount,
@@ -100,13 +105,14 @@ export class GitHubSponsorsProvider extends BaseFundingProvider {
 
   async getSponsorsData(
     username: string,
-    graphqlClient?: typeof graphql
+    graphqlClient?: typeof graphql,
   ): Promise<GitHubSponsorshipData> {
     if (!this.validateUsername(username)) {
       throw new Error(`Invalid GitHub username: ${username}`);
     }
 
-    const client = graphqlClient ?? this.createGraphQLClient(this.getApiToken());
+    const client =
+      graphqlClient ?? this.createGraphQLClient(this.getApiToken());
     return this.fetchWithRetry(() => this.querySponsorsData(username, client));
   }
 
@@ -130,25 +136,28 @@ export class GitHubSponsorsProvider extends BaseFundingProvider {
         reset: new Date(result.rateLimit.resetAt),
       };
     } catch (error) {
-      this.logger.error({ error }, 'Failed to fetch rate limit info');
+      this.logger.error({ error }, "Failed to fetch rate limit info");
       throw error;
     }
   }
 
   private async querySponsorsData(
     username: string,
-    graphqlClient: typeof graphql
+    graphqlClient: typeof graphql,
   ): Promise<GitHubSponsorshipData> {
     try {
-      const result = await graphqlClient<GitHubSponsorshipData>(SPONSORS_QUERY, {
-        username,
-      });
+      const result = await graphqlClient<GitHubSponsorshipData>(
+        SPONSORS_QUERY,
+        {
+          username,
+        },
+      );
 
       // Log rate limit warning if low
       if (result.rateLimit.remaining < 100) {
         this.logger.warn(
           { remaining: result.rateLimit.remaining },
-          'GitHub API rate limit is low'
+          "GitHub API rate limit is low",
         );
       }
 
@@ -157,11 +166,11 @@ export class GitHubSponsorsProvider extends BaseFundingProvider {
       if (error.status === 404) {
         throw new Error(`GitHub user not found: ${username}`);
       }
-      if (error.status === 403 && error.message?.includes('rate limit')) {
-        throw new Error('GitHub API rate limit exceeded');
+      if (error.status === 403 && error.message?.includes("rate limit")) {
+        throw new Error("GitHub API rate limit exceeded");
       }
 
-      this.logger.error({ error, username }, 'GitHub API query failed');
+      this.logger.error({ error, username }, "GitHub API query failed");
       throw error;
     }
   }

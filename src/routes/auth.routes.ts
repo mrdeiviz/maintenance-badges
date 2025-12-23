@@ -1,28 +1,31 @@
-import { FastifyPluginAsync } from 'fastify';
-import { GitHubOAuthService } from '../services/oauth.service.js';
-import { TokenStorageService } from '../services/token-storage.service.js';
-import { randomBytes } from 'crypto';
+import { FastifyPluginAsync } from "fastify";
+import { GitHubOAuthService } from "../services/oauth.service.js";
+import { TokenStorageService } from "../services/token-storage.service.js";
+import { randomBytes } from "crypto";
 
 // In-memory state storage (en producción usar Redis)
 const pendingStates = new Map<string, { createdAt: number }>();
 
 // Limpiar states expirados cada 5 minutos
-setInterval(() => {
-  const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
-  for (const [state, data] of pendingStates.entries()) {
-    if (data.createdAt < fiveMinutesAgo) {
-      pendingStates.delete(state);
+setInterval(
+  () => {
+    const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
+    for (const [state, data] of pendingStates.entries()) {
+      if (data.createdAt < fiveMinutesAgo) {
+        pendingStates.delete(state);
+      }
     }
-  }
-}, 5 * 60 * 1000);
+  },
+  5 * 60 * 1000,
+);
 
 export const authRoutes: FastifyPluginAsync = async (fastify) => {
   // Initialize services inside the plugin (after config is loaded)
   const oauthService = new GitHubOAuthService();
   const tokenStorage = new TokenStorageService();
   // Iniciar OAuth flow
-  fastify.get('/auth/github', async (_request, reply) => {
-    const state = randomBytes(32).toString('hex');
+  fastify.get("/auth/github", async (_request, reply) => {
+    const state = randomBytes(32).toString("hex");
     pendingStates.set(state, { createdAt: Date.now() });
 
     const authUrl = oauthService.getAuthorizationUrl(state);
@@ -30,17 +33,19 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
   });
 
   // GitHub OAuth callback
-  fastify.get('/auth/github/callback', async (request, reply) => {
+  fastify.get("/auth/github/callback", async (request, reply) => {
     const { code, state } = request.query as { code?: string; state?: string };
 
     // Validar state
     if (!state || !pendingStates.has(state)) {
-      return reply.code(400).send({ error: 'Invalid or expired state parameter' });
+      return reply
+        .code(400)
+        .send({ error: "Invalid or expired state parameter" });
     }
     pendingStates.delete(state);
 
     if (!code) {
-      return reply.code(400).send({ error: 'No authorization code provided' });
+      return reply.code(400).send({ error: "No authorization code provided" });
     }
 
     try {
@@ -59,13 +64,13 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
       });
 
       // Redirect a página de éxito con badge URL
-      const protocol = request.headers['x-forwarded-proto'] || request.protocol;
-      const host = request.headers['x-forwarded-host'] || request.hostname;
+      const protocol = request.headers["x-forwarded-proto"] || request.protocol;
+      const host = request.headers["x-forwarded-host"] || request.hostname;
       const badgeBaseUrl = `${protocol}://${host}/badge/github/${user.login}`;
       const defaultGoal = 5000;
       const badgeUrl = `${badgeBaseUrl}/${defaultGoal}`;
 
-      return reply.type('text/html').send(`
+      return reply.type("text/html").send(`
         <!DOCTYPE html>
         <html>
         <head>
@@ -367,30 +372,30 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
         </html>
       `);
     } catch (error) {
-      request.log.error({ error }, 'OAuth callback failed');
-      return reply.code(500).send({ error: 'OAuth authorization failed' });
+      request.log.error({ error }, "OAuth callback failed");
+      return reply.code(500).send({ error: "OAuth authorization failed" });
     }
   });
 
   // Revocar acceso
-  fastify.post('/auth/revoke', async (request, reply) => {
+  fastify.post("/auth/revoke", async (request, reply) => {
     const { username } = request.body as { username?: string };
 
     if (!username) {
-      return reply.code(400).send({ error: 'Username required' });
+      return reply.code(400).send({ error: "Username required" });
     }
 
     try {
       await tokenStorage.deleteUserToken(username);
-      return reply.send({ success: true, message: 'Access revoked' });
+      return reply.send({ success: true, message: "Access revoked" });
     } catch (error) {
-      request.log.error({ error, username }, 'Failed to revoke access');
-      return reply.code(500).send({ error: 'Failed to revoke access' });
+      request.log.error({ error, username }, "Failed to revoke access");
+      return reply.code(500).send({ error: "Failed to revoke access" });
     }
   });
 
   // Check auth status
-  fastify.get('/auth/status/:username', async (request, reply) => {
+  fastify.get("/auth/status/:username", async (request, reply) => {
     const { username } = request.params as { username: string };
 
     const hasToken = await tokenStorage.hasToken(username);

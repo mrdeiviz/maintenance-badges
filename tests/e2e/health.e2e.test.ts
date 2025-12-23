@@ -14,17 +14,17 @@ const fundingDataService = {
   getSupportedPlatforms: vi.fn().mockReturnValue(['github']),
 };
 
-vi.mock('../../src/services/cache.service.ts', () => ({
+vi.mock('../../src/services/cache.service.js', () => ({
   createCacheService: () => cacheService,
   getCacheService: () => cacheService,
 }));
 
-vi.mock('../../src/services/funding-data.service.ts', () => ({
+vi.mock('../../src/services/funding-data.service.js', () => ({
   createFundingDataService: () => fundingDataService,
   getFundingDataService: () => fundingDataService,
 }));
 
-vi.mock('../../src/services/token-storage.service.ts', () => ({
+vi.mock('../../src/services/token-storage.service.js', () => ({
   TokenStorageService: class {
     async saveUserToken() {}
     async getUserToken() {
@@ -37,7 +37,7 @@ vi.mock('../../src/services/token-storage.service.ts', () => ({
   },
 }));
 
-vi.mock('../../src/providers/github-sponsors.provider.ts', () => ({
+vi.mock('../../src/providers/github-sponsors.provider.js', () => ({
   GitHubSponsorsProvider: class {
     async getRateLimitInfo() {
       return {
@@ -50,7 +50,7 @@ vi.mock('../../src/providers/github-sponsors.provider.ts', () => ({
 }));
 
 describe('Health routes (e2e)', () => {
-  let server: Awaited<ReturnType<typeof import('../../src/core/server.ts').createServer>>;
+  let server: Awaited<ReturnType<typeof import('../../src/core/server.js').createServer>>;
 
   beforeAll(async () => {
     process.env.NODE_ENV = 'test';
@@ -64,10 +64,10 @@ describe('Health routes (e2e)', () => {
     process.env.REDIS_URL = 'redis://localhost:6379';
     process.env.ALLOWED_ORIGINS = '*';
 
-    const { loadConfig } = await import('../../src/core/config.ts');
+    const { loadConfig } = await import('../../src/core/config.js');
     loadConfig();
 
-    const { createServer } = await import('../../src/core/server.ts');
+    const { createServer } = await import('../../src/core/server.js');
     server = await createServer();
     await server.ready();
   });
