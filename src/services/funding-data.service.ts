@@ -55,7 +55,7 @@ export class FundingDataService {
 
     // Fetch from provider using user's token
     try {
-      const data = await provider.getFundingData(username, userToken);
+    const data = await provider.getFundingData(username, userToken);
 
       // Determine TTL based on rate limit
       const config = this.getConfig();
