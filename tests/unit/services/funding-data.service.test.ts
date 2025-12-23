@@ -3,63 +3,61 @@ import { FundingDataService } from '../../../src/services/funding-data.service';
 import type { FundingData, Platform } from '../../../src/types/funding-data.types';
 
 // Mock dependencies
-const mockCacheService = {
-  get: vi.fn(),
-  set: vi.fn(),
-  del: vi.fn(),
-  ping: vi.fn(),
-  getMetrics: vi.fn(),
-  close: vi.fn(),
-};
-
-const mockTokenStorage = {
-  getUserToken: vi.fn(),
-  saveUserToken: vi.fn(),
-  deleteUserToken: vi.fn(),
-  hasToken: vi.fn(),
-};
-
-const mockProvider = {
-  platform: 'github',
-  getFundingData: vi.fn(),
-  getRateLimitInfo: vi.fn(),
-  validateUsername: vi.fn(),
-};
-
-const mockLogger = {
-  debug: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  error: vi.fn(),
-};
-
-const mockConfig = {
-  cache: {
-    defaultTTL: 300,
-    maxTTL: 3600,
+const { mockCacheService, mockTokenStorage, mockProvider, mockLogger, mockConfig } = vi.hoisted(() => ({
+  mockCacheService: {
+    get: vi.fn(),
+    set: vi.fn(),
+    del: vi.fn(),
+    ping: vi.fn(),
+    getMetrics: vi.fn(),
+    close: vi.fn(),
   },
-  github: {
-    token: 'test-token',
+  mockTokenStorage: {
+    getUserToken: vi.fn(),
+    saveUserToken: vi.fn(),
+    deleteUserToken: vi.fn(),
+    hasToken: vi.fn(),
   },
-};
+  mockProvider: {
+    platform: 'github',
+    getFundingData: vi.fn(),
+    getRateLimitInfo: vi.fn(),
+    validateUsername: vi.fn(),
+  },
+  mockLogger: {
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+  },
+  mockConfig: {
+    cache: {
+      defaultTTL: 300,
+      maxTTL: 3600,
+    },
+    github: {
+      token: 'test-token',
+    },
+  },
+}));
 
-vi.mock('../../../src/services/cache.service', () => ({
+vi.mock('../../../src/services/cache.service.js', () => ({
   getCacheService: () => mockCacheService,
 }));
 
-vi.mock('../../../src/services/token-storage.service', () => ({
+vi.mock('../../../src/services/token-storage.service.js', () => ({
   TokenStorageService: vi.fn(() => mockTokenStorage),
 }));
 
-vi.mock('../../../src/providers/github-sponsors.provider', () => ({
+vi.mock('../../../src/providers/github-sponsors.provider.js', () => ({
   GitHubSponsorsProvider: vi.fn(() => mockProvider),
 }));
 
-vi.mock('../../../src/core/logger', () => ({
+vi.mock('../../../src/core/logger.js', () => ({
   getLogger: () => mockLogger,
 }));
 
-vi.mock('../../../src/core/config', () => ({
+vi.mock('../../../src/core/config.js', () => ({
   getConfig: () => mockConfig,
 }));
 

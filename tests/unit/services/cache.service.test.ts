@@ -2,43 +2,41 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { CacheService } from '../../../src/services/cache.service';
 
 // Mock Redis
-const mockRedis = {
-  get: vi.fn(),
-  setex: vi.fn(),
-  del: vi.fn(),
-  ping: vi.fn(),
-  quit: vi.fn(),
-  on: vi.fn(),
-};
-
-const mockLogger = {
-  debug: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  error: vi.fn(),
-};
-
-const mockConfig = {
-  cache: {
-    defaultTTL: 300,
+const { mockRedis, mockLogger, mockConfig } = vi.hoisted(() => ({
+  mockRedis: {
+    get: vi.fn(),
+    setex: vi.fn(),
+    del: vi.fn(),
+    ping: vi.fn(),
+    quit: vi.fn(),
+    on: vi.fn(),
   },
-  redis: {
-    url: 'redis://localhost:6379',
-    password: undefined,
+  mockLogger: {
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
   },
-};
+  mockConfig: {
+    cache: {
+      defaultTTL: 300,
+    },
+    redis: {
+      url: 'redis://localhost:6379',
+      password: undefined,
+    },
+  },
+}));
 
-vi.mock('ioredis', () => {
-  return {
-    default: vi.fn(() => mockRedis),
-  };
-});
+vi.mock('ioredis', () => ({
+  default: vi.fn().mockImplementation(() => mockRedis),
+}));
 
-vi.mock('../../../src/core/config', () => ({
+vi.mock('../../../src/core/config.js', () => ({
   getConfig: () => mockConfig,
 }));
 
-vi.mock('../../../src/core/logger', () => ({
+vi.mock('../../../src/core/logger.js', () => ({
   getLogger: () => mockLogger,
 }));
 

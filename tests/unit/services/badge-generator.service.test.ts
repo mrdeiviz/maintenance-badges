@@ -183,7 +183,7 @@ describe('BadgeGeneratorService', () => {
 
       const badge = service.generateFundingBadge(options);
 
-      expect(badge).toContain('blue');
+      expect(badge).toContain('#007ec6');
     });
 
     it('should support different badge styles', () => {
@@ -257,7 +257,7 @@ describe('BadgeGeneratorService', () => {
       expect(badge).toContain('<svg');
       expect(badge).toContain('Maintenance Fund');
       expect(badge).toContain('Error');
-      expect(badge).toContain('lightgrey');
+      expect(badge).toContain('#9f9f9f');
     });
 
     it('should generate error badge with custom message', () => {
@@ -266,7 +266,7 @@ describe('BadgeGeneratorService', () => {
       expect(badge).toContain('<svg');
       expect(badge).toContain('Maintenance Fund');
       expect(badge).toContain('Not Found');
-      expect(badge).toContain('lightgrey');
+      expect(badge).toContain('#9f9f9f');
     });
 
     it('should use flat-square style for error badges', () => {

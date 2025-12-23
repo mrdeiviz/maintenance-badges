@@ -2,39 +2,36 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { TokenStorageService } from '../../../src/services/token-storage.service';
 
 // Mock Prisma Client
-const mockPrismaClient = {
-  userToken: {
-    upsert: vi.fn(),
-    findUnique: vi.fn(),
-    update: vi.fn(),
-    delete: vi.fn(),
-    count: vi.fn(),
+const { mockPrismaClient, mockEncryptionService, mockLogger, mockConfig, mockPool } = vi.hoisted(() => ({
+  mockPrismaClient: {
+    userToken: {
+      upsert: vi.fn(),
+      findUnique: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+      count: vi.fn(),
+    },
   },
-};
-
-// Mock encryption service
-const mockEncryptionService = {
-  encrypt: vi.fn((text: string) => `encrypted_${text}`),
-  decrypt: vi.fn((text: string) => text.replace('encrypted_', '')),
-};
-
-const mockLogger = {
-  debug: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  error: vi.fn(),
-};
-
-const mockConfig = {
-  database: {
-    url: 'postgresql://user:pass@localhost:5432/testdb',
+  mockEncryptionService: {
+    encrypt: vi.fn((text: string) => `encrypted_${text}`),
+    decrypt: vi.fn((text: string) => text.replace('encrypted_', '')),
   },
-};
-
-const mockPool = {
-  connect: vi.fn(),
-  end: vi.fn(),
-};
+  mockLogger: {
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+  },
+  mockConfig: {
+    database: {
+      url: 'postgresql://user:pass@localhost:5432/testdb',
+    },
+  },
+  mockPool: {
+    connect: vi.fn(),
+    end: vi.fn(),
+  },
+}));
 
 vi.mock('@prisma/client', () => ({
   PrismaClient: vi.fn(() => mockPrismaClient),
@@ -48,15 +45,15 @@ vi.mock('pg', () => ({
   Pool: vi.fn(() => mockPool),
 }));
 
-vi.mock('../../../src/services/encryption.service', () => ({
+vi.mock('../../../src/services/encryption.service.js', () => ({
   EncryptionService: vi.fn(() => mockEncryptionService),
 }));
 
-vi.mock('../../../src/core/logger', () => ({
+vi.mock('../../../src/core/logger.js', () => ({
   getLogger: () => mockLogger,
 }));
 
-vi.mock('../../../src/core/config', () => ({
+vi.mock('../../../src/core/config.js', () => ({
   getConfig: () => mockConfig,
 }));
 

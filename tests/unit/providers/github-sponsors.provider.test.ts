@@ -1,8 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { GitHubSponsorsProvider } from '../../../src/providers/github-sponsors.provider';
 
-const mockGraphql = vi.fn();
-const mockGraphqlDefaults = vi.fn(() => mockGraphql);
+const { mockGraphql, mockGraphqlDefaults } = vi.hoisted(() => {
+  const mockGraphql = vi.fn();
+  const mockGraphqlDefaults = vi.fn(() => mockGraphql);
+  return { mockGraphql, mockGraphqlDefaults };
+});
 
 const mockLogger = {
   debug: vi.fn(),
@@ -23,11 +26,11 @@ vi.mock('@octokit/graphql', () => ({
   },
 }));
 
-vi.mock('../../../src/core/logger', () => ({
+vi.mock('../../../src/core/logger.js', () => ({
   getLogger: () => mockLogger,
 }));
 
-vi.mock('../../../src/core/config', () => ({
+vi.mock('../../../src/core/config.js', () => ({
   getConfig: () => mockConfig,
 }));
 

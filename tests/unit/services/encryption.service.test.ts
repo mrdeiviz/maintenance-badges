@@ -7,7 +7,7 @@ const mockConfig = {
   },
 };
 
-vi.mock('../../../src/core/config', () => ({
+vi.mock('../../../src/core/config.js', () => ({
   getConfig: () => mockConfig,
 }));
 
