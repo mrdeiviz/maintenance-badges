@@ -15,9 +15,25 @@ export default [
         ecmaVersion: "latest",
         sourceType: "module",
       },
+      globals: {
+        console: "readonly",
+        fetch: "readonly",
+        process: "readonly",
+        setInterval: "readonly",
+        setTimeout: "readonly",
+        URLSearchParams: "readonly",
+      },
     },
     plugins: {
       "@typescript-eslint": tsPlugin,
+    },
+    rules: {
+      "no-undef": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
     },
   },
 ];
