@@ -1,15 +1,18 @@
-import type { FastifyPluginAsync } from 'fastify';
-import { getConfig } from '../core/config.js';
+import type { FastifyPluginAsync } from "fastify";
+import { getConfig } from "../core/config.js";
 
 export const indexRoutes: FastifyPluginAsync = async (fastify) => {
-  fastify.get('/', async (request, reply) => {
-    const protocol = request.headers['x-forwarded-proto'] || request.protocol;
-    const host = request.headers['x-forwarded-host'] || request.headers.host || request.hostname;
+  fastify.get("/", async (request, reply) => {
+    const protocol = request.headers["x-forwarded-proto"] || request.protocol;
+    const host =
+      request.headers["x-forwarded-host"] ||
+      request.headers.host ||
+      request.hostname;
     const config = getConfig();
     const baseUrl = config.publicBaseUrl || `${protocol}://${host}`;
-    const badgeBasePath = '/badge/sample';
+    const badgeBasePath = "/badge/sample";
 
-    return reply.type('text/html').send(`
+    return reply.type("text/html").send(`
       <!DOCTYPE html>
       <html lang="en">
       <head>

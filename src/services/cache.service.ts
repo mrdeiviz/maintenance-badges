@@ -1,6 +1,6 @@
-import Redis from 'ioredis';
-import { getConfig } from '../core/config.js';
-import { getLogger } from '../core/logger.js';
+import Redis from "ioredis";
+import { getConfig } from "../core/config.js";
+import { getLogger } from "../core/logger.js";
 
 export class CacheService {
   private redis: Redis;
@@ -26,12 +26,12 @@ export class CacheService {
       },
     });
 
-    this.redis.on('connect', () => {
-      this.logger.info('Redis connected');
+    this.redis.on("connect", () => {
+      this.logger.info("Redis connected");
     });
 
-    this.redis.on('error', (error) => {
-      this.logger.error({ error }, 'Redis connection error');
+    this.redis.on("error", (error) => {
+      this.logger.error({ error }, "Redis connection error");
     });
   }
 
@@ -47,7 +47,7 @@ export class CacheService {
       this.metrics.hits++;
       return JSON.parse(value) as T;
     } catch (error) {
-      this.logger.error({ error, key }, 'Cache get failed');
+      this.logger.error({ error, key }, "Cache get failed");
       return null;
     }
   }
@@ -59,7 +59,7 @@ export class CacheService {
 
       await this.redis.setex(key, expiresIn, serialized);
     } catch (error) {
-      this.logger.error({ error, key }, 'Cache set failed');
+      this.logger.error({ error, key }, "Cache set failed");
     }
   }
 
@@ -67,14 +67,14 @@ export class CacheService {
     try {
       await this.redis.del(key);
     } catch (error) {
-      this.logger.error({ error, key }, 'Cache delete failed');
+      this.logger.error({ error, key }, "Cache delete failed");
     }
   }
 
   async ping(): Promise<boolean> {
     try {
       const result = await this.redis.ping();
-      return result === 'PONG';
+      return result === "PONG";
     } catch {
       return false;
     }
@@ -88,7 +88,7 @@ export class CacheService {
       hits: this.metrics.hits,
       misses: this.metrics.misses,
       total,
-      hitRate: hitRate.toFixed(2) + '%',
+      hitRate: hitRate.toFixed(2) + "%",
     };
   }
 
@@ -108,7 +108,9 @@ export function createCacheService(): CacheService {
 
 export function getCacheService(): CacheService {
   if (!cacheServiceInstance) {
-    throw new Error('Cache service not initialized. Call createCacheService() first.');
+    throw new Error(
+      "Cache service not initialized. Call createCacheService() first.",
+    );
   }
   return cacheServiceInstance;
 }

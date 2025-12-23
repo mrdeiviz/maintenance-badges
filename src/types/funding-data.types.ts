@@ -1,4 +1,4 @@
-export type Platform = 'github';
+export type Platform = "github";
 
 export interface FundingData {
   platform: Platform;
@@ -25,7 +25,7 @@ export interface RateLimitInfo {
 export interface BadgeOptions {
   current: number;
   goal: number;
-  style: 'flat' | 'flat-square' | 'for-the-badge';
+  style: "flat" | "flat-square" | "for-the-badge";
   label: string;
   logo?: string;
   color?: string;

@@ -1,20 +1,20 @@
-import type { FastifyPluginAsync } from 'fastify';
-import { getCacheService } from '../services/cache.service.js';
-import { GitHubSponsorsProvider } from '../providers/github-sponsors.provider.js';
-import { getFundingDataService } from '../services/funding-data.service.js';
+import type { FastifyPluginAsync } from "fastify";
+import { getCacheService } from "../services/cache.service.js";
+import { GitHubSponsorsProvider } from "../providers/github-sponsors.provider.js";
+import { getFundingDataService } from "../services/funding-data.service.js";
 
 export const healthRoutes: FastifyPluginAsync = async (fastify) => {
   const cacheService = getCacheService();
   const fundingService = getFundingDataService();
 
-  fastify.get('/health', async (_request, reply) => {
+  fastify.get("/health", async (_request, reply) => {
     const isRedisHealthy = await checkRedisHealth();
     const githubHealth = await checkGitHubHealth();
 
     const healthy = isRedisHealthy && githubHealth.accessible;
 
     return reply.code(healthy ? 200 : 503).send({
-      status: healthy ? 'ok' : 'degraded',
+      status: healthy ? "ok" : "degraded",
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       services: {
@@ -31,7 +31,7 @@ export const healthRoutes: FastifyPluginAsync = async (fastify) => {
     });
   });
 
-  fastify.get('/ping', async (_request, reply) => {
+  fastify.get("/ping", async (_request, reply) => {
     return reply.send({ pong: true, timestamp: Date.now() });
   });
 

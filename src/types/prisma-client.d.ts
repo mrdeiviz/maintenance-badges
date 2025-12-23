@@ -1,4 +1,4 @@
-declare module '@prisma/client' {
+declare module "@prisma/client" {
   export class PrismaClient {
     constructor(options?: Record<string, unknown>);
     [key: string]: any;
