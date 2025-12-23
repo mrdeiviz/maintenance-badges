@@ -27,8 +27,24 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Test
-        run: npm run test
+      - name: Check formatting
+        run: npx prettier --check "src/**/*.ts"
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Test with coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/coverage-final.json
+          fail_ci_if_error: false
+
+      - name: Security audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
 
       - name: Build
         run: npm run build
