@@ -1,7 +1,6 @@
 import { graphql } from '@octokit/graphql';
 import { BaseFundingProvider } from './base.provider.js';
 import type { FundingData, RateLimitInfo } from '../types/funding-data.types.js';
-import { getConfig } from '../core/config.js';
 import { getLogger } from '../core/logger.js';
 
 interface GitHubSponsorshipData {

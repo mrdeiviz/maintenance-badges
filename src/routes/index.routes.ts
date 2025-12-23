@@ -7,7 +7,6 @@ export const indexRoutes: FastifyPluginAsync = async (fastify) => {
     const host = request.headers['x-forwarded-host'] || request.headers.host || request.hostname;
     const config = getConfig();
     const baseUrl = config.publicBaseUrl || `${protocol}://${host}`;
-    const exampleUsername = config.badgeExampleUsername || 'example';
     const badgeBasePath = '/badge/sample';
 
     return reply.type('text/html').send(`
