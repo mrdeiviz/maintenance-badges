@@ -30,13 +30,13 @@ export class BadgeGeneratorService {
   }
 
   private getProgressColor(percentage: number): string {
-    if (percentage < 20) return "e74c3c"; // red - critical
-    if (percentage < 40) return "e67e22"; // orange - needs attention
-    if (percentage < 60) return "f39c12"; // yellow-orange
-    if (percentage < 80) return "f1c40f"; // yellow
-    if (percentage < 100) return "2ecc71"; // green - almost there
-    if (percentage < 150) return "27ae60"; // darker green - goal reached
-    return "9b59b6"; // purple - exceeded goal!
+    if (percentage < 25) return "e74c3c"; // red - critical (shields.io: red)
+    if (percentage < 50) return "e67e22"; // orange - needs attention (shields.io: orange)
+    if (percentage < 75) return "f1c40f"; // yellow (shields.io: yellow)
+    if (percentage < 100) return "97ca00"; // yellowgreen - almost there (shields.io: yellowgreen)
+    if (percentage === 100) return "44cc11"; // brightgreen - goal reached! (shields.io: brightgreen)
+    if (percentage < 150) return "007ec6"; // blue - exceeded! (shields.io: blue)
+    return "9b59b6"; // purple - way exceeded!
   }
 
   private formatMessage(current: number, goal: number): string {
@@ -48,10 +48,11 @@ export class BadgeGeneratorService {
     if (amount >= 1000000) {
       return `${(amount / 1000000).toFixed(1)}M`;
     }
-    if (amount >= 1000) {
+    if (amount >= 10000) {
       return `${(amount / 1000).toFixed(1)}k`;
     }
-    return amount.toFixed(0);
+    // For amounts under 10,000, show with comma separator (e.g., 5,000)
+    return amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   private widenMessageSegment(
