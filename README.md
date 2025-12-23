@@ -95,15 +95,7 @@ Make your badge match your project's style by adding URL parameters:
 
 ### 🎨 Add an Icon
 
-Use any icon from [Simple Icons](https://simpleicons.org/):
-
-```markdown
-<!-- With GitHub icon -->
-[![Maintenance](https://your-service.com/badge/github/YOUR_USERNAME/5000?logo=github)](...)
-
-<!-- With heart icon -->
-[![Maintenance](https://your-service.com/badge/github/YOUR_USERNAME/5000?logo=heart)](...)
-```
+`logo` is reserved for future support. Today it is accepted but ignored.
 
 ### 🌈 Custom Color
 
@@ -116,7 +108,7 @@ Override the automatic color progression with your own color:
 
 ### 🔄 Force Refresh
 
-By default, badges are cached for 5 minutes. Force a refresh:
+By default, badges are cached for 5 minutes (up to 1 hour if rate limits are low). Force a refresh of the data cache:
 
 ```markdown
 [![Maintenance](https://your-service.com/badge/github/YOUR_USERNAME/5000?refresh=true)](...)
@@ -125,7 +117,7 @@ By default, badges are cached for 5 minutes. Force a refresh:
 ### 🎯 All Options Combined
 
 ```markdown
-[![Support Us](https://your-service.com/badge/github/YOUR_USERNAME/5000?style=for-the-badge&label=Support%20Us&logo=heart&color=ff69b4)](https://github.com/sponsors/YOUR_USERNAME)
+[![Support Us](https://your-service.com/badge/github/YOUR_USERNAME/5000?style=for-the-badge&label=Support%20Us&color=ff69b4)](https://github.com/sponsors/YOUR_USERNAME)
 ```
 
 ---
@@ -135,7 +127,7 @@ By default, badges are cached for 5 minutes. Force a refresh:
 <details>
 <summary><b>How often does the badge update?</b></summary>
 
-Badges are cached for 5 minutes to protect GitHub's API limits. This means your funding progress will be reflected within 5 minutes of receiving a new sponsor.
+Badges are cached for 5 minutes to protect GitHub's API limits. If rate limits are low, the cache can extend up to 1 hour. This means your funding progress is usually reflected within a few minutes, but can take longer during heavy API usage.
 
 </details>
 
@@ -156,14 +148,14 @@ Simply remove the badge from your README. If you want to revoke access completel
 <details>
 <summary><b>Can I use this for multiple repositories?</b></summary>
 
-Yes! Once you've connected your GitHub account, you can use your badge URL in any repository.
+Yes. Once you've connected your GitHub account, the badge reflects your maintainer-level GitHub Sponsors data, so you can use the same badge URL in any repository.
 
 </details>
 
 <details>
 <summary><b>What happens if I don't have GitHub Sponsors enabled?</b></summary>
 
-The badge will show $0 raised and still work fine. It's a great way to show your funding goal even before you have sponsors!
+If your account is not enrolled in GitHub Sponsors, the service may not be able to read sponsorship data and will return an error badge. If you're enrolled but have no sponsors yet, the badge will show $0.
 
 </details>
 
@@ -174,8 +166,10 @@ Colors change automatically based on your progress:
 - 🔴 **Red**: 0-25%
 - 🟠 **Orange**: 25-50%
 - 🟡 **Yellow**: 50-75%
-- 🟢 **Green**: 75-100%
-- 🟣 **Purple**: Over 100% (you exceeded your goal!)
+- 🟢 **Yellowgreen**: 75-100%
+- ✅ **Brightgreen**: exactly 100%
+- 🔵 **Blue**: 100-150%
+- 🟣 **Purple**: over 150%
 
 </details>
 
@@ -183,7 +177,7 @@ Colors change automatically based on your progress:
 
 ## 🔐 Privacy & Security
 
-- ✅ We only request **read-only** access to your GitHub Sponsors data
+- ✅ We only request **read-only** GitHub access (`read:user`, `read:org`)
 - ✅ All tokens are **encrypted at rest** using AES-256-GCM
 - ✅ We **never** see or store your sponsors' personal information
 - ✅ You can **revoke access** anytime from your GitHub settings
@@ -264,7 +258,7 @@ GET /badge/:platform/:username/:goal
 **Query Parameters:**
 - `style`: Badge style: `flat`, `flat-square`, `for-the-badge` (default: `flat`)
 - `label`: Custom label text (default: `Funding`)
-- `logo`: Icon from [simple-icons](https://simpleicons.org/)
+- `logo`: Reserved for future support (currently ignored)
 - `color`: Custom color (hex without `#`, overrides automatic color)
 - `refresh`: Force cache refresh (`true`/`false`)
 
@@ -280,8 +274,8 @@ https://your-service.com/badge/github/octocat/5000?style=flat-square
 # Big badge style
 https://your-service.com/badge/github/octocat/5000?style=for-the-badge
 
-# Custom label, logo and color
-https://your-service.com/badge/github/octocat/1000?label=Support&logo=heart&color=ff69b4
+# Custom label and color
+https://your-service.com/badge/github/octocat/1000?label=Support&color=ff69b4
 ```
 
 **Error States:**
@@ -452,7 +446,7 @@ User views README → Badge URL loaded
                   ↓
           /badge/github/username/goal
                   ↓
-        Redis cache check (5min TTL)
+        Redis cache check (5min TTL, up to 1hr on low rate limits)
             ↓           ↓
         HIT: →      MISS: GitHub API
       Return SVG        ↓
