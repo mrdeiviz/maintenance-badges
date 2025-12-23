@@ -3,7 +3,7 @@ import type { FundingData, RateLimitInfo } from '../types/funding-data.types.js'
 export abstract class BaseFundingProvider {
   abstract platform: string;
 
-  abstract getFundingData(username: string): Promise<FundingData>;
+  abstract getFundingData(username: string, token?: string): Promise<FundingData>;
 
   abstract validateUsername(username: string): boolean;
 

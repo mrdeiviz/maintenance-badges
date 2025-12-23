@@ -54,7 +54,7 @@ export class GitHubOAuthService {
       throw new Error('Failed to exchange OAuth code for token');
     }
 
-    const data: GitHubOAuthToken = await response.json();
+    const data = (await response.json()) as GitHubOAuthToken;
 
     if (!data.access_token) {
       throw new Error('No access token in GitHub response');
@@ -77,6 +77,7 @@ export class GitHubOAuthService {
       throw new Error('Failed to fetch GitHub user info');
     }
 
-    return response.json();
+    const user = (await response.json()) as GitHubUser;
+    return user;
   }
 }

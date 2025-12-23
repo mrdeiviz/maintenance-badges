@@ -1,6 +1,7 @@
 import { graphql } from '@octokit/graphql';
 import { BaseFundingProvider } from './base.provider.js';
 import type { FundingData, RateLimitInfo } from '../types/funding-data.types.js';
+import { getConfig } from '../core/config.js';
 import { getLogger } from '../core/logger.js';
 
 interface GitHubSponsorshipData {
@@ -49,6 +50,14 @@ export class GitHubSponsorsProvider extends BaseFundingProvider {
     });
   }
 
+  private getApiToken(): string {
+    const config = getConfig();
+    if (!config.github.token) {
+      throw new Error('GitHub token is required for rate limit checks');
+    }
+    return config.github.token;
+  }
+
   async getFundingData(username: string, token?: string): Promise<FundingData> {
     if (!this.validateUsername(username)) {
       throw new Error(`Invalid GitHub username: ${username}`);
@@ -91,13 +100,14 @@ export class GitHubSponsorsProvider extends BaseFundingProvider {
 
   async getSponsorsData(
     username: string,
-    graphqlClient: typeof graphql
+    graphqlClient?: typeof graphql
   ): Promise<GitHubSponsorshipData> {
     if (!this.validateUsername(username)) {
       throw new Error(`Invalid GitHub username: ${username}`);
     }
 
-    return this.fetchWithRetry(() => this.querySponsorsData(username, graphqlClient));
+    const client = graphqlClient ?? this.createGraphQLClient(this.getApiToken());
+    return this.fetchWithRetry(() => this.querySponsorsData(username, client));
   }
 
   validateUsername(username: string): boolean {
@@ -109,7 +119,8 @@ export class GitHubSponsorsProvider extends BaseFundingProvider {
   async getRateLimitInfo(): Promise<RateLimitInfo> {
     try {
       const query = `{ rateLimit { remaining limit resetAt } }`;
-      const result = await this.graphqlClient<{
+      const graphqlClient = this.createGraphQLClient(this.getApiToken());
+      const result = await graphqlClient<{
         rateLimit: { remaining: number; limit: number; resetAt: string };
       }>(query);
 
