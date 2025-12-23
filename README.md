@@ -1,4 +1,4 @@
-# Maintenance Badge 💰
+# Maintenance Badges
 
 **Show your GitHub Sponsors progress with beautiful, dynamic badges**
 
@@ -21,7 +21,7 @@
 
 ---
 
-## 🎯 What is this?
+## What is this?
 
 Display your GitHub Sponsors progress directly in your README with automatically updating badges. Perfect for open source projects that want to show their funding goals and progress.
 
@@ -34,7 +34,7 @@ Display your GitHub Sponsors progress directly in your README with automatically
 
 ---
 
-## 🚀 Get Started in 2 Minutes
+## Get Started in 2 Minutes
 
 ### 1️⃣ Connect Your GitHub Account
 
