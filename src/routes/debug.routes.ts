@@ -14,6 +14,10 @@ export const debugRoutes: FastifyPluginAsync = async (fastify) => {
     const provider = new GitHubSponsorsProvider();
     const data = await provider.getSponsorsData(username);
 
+    if (!data.user || !data.user.sponsorshipsAsMaintainer) {
+      return reply.code(404).send({ error: 'Sponsor data not available' });
+    }
+
     return reply
       .code(200)
       .header('Cache-Control', 'no-store')

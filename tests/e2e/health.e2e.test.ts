@@ -24,6 +24,19 @@ vi.mock('../../src/services/funding-data.service.ts', () => ({
   getFundingDataService: () => fundingDataService,
 }));
 
+vi.mock('../../src/services/token-storage.service.ts', () => ({
+  TokenStorageService: class {
+    async saveUserToken() {}
+    async getUserToken() {
+      return 'test-token';
+    }
+    async deleteUserToken() {}
+    async hasToken() {
+      return true;
+    }
+  },
+}));
+
 vi.mock('../../src/providers/github-sponsors.provider.ts', () => ({
   GitHubSponsorsProvider: class {
     async getRateLimitInfo() {
@@ -42,6 +55,12 @@ describe('Health routes (e2e)', () => {
   beforeAll(async () => {
     process.env.NODE_ENV = 'test';
     process.env.GITHUB_TOKEN = 'test-token';
+    process.env.GITHUB_OAUTH_CLIENT_ID = 'test-client-id';
+    process.env.GITHUB_OAUTH_CLIENT_SECRET = 'test-client-secret';
+    process.env.GITHUB_OAUTH_CALLBACK_URL = 'http://localhost:3000/auth/github/callback';
+    process.env.DATABASE_URL = 'postgresql://user:pass@localhost:5432/testdb';
+    process.env.ENCRYPTION_SECRET = 'test-encryption-secret-32-characters';
+    process.env.SESSION_SECRET = 'test-session-secret-32-characters';
     process.env.REDIS_URL = 'redis://localhost:6379';
     process.env.ALLOWED_ORIGINS = '*';
 
@@ -54,7 +73,9 @@ describe('Health routes (e2e)', () => {
   });
 
   afterAll(async () => {
-    await server.close();
+    if (server) {
+      await server.close();
+    }
   });
 
   it('reports healthy services', async () => {

@@ -21,7 +21,7 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
   const oauthService = new GitHubOAuthService();
   const tokenStorage = new TokenStorageService();
   // Iniciar OAuth flow
-  fastify.get('/auth/github', async (request, reply) => {
+  fastify.get('/auth/github', async (_request, reply) => {
     const state = randomBytes(32).toString('hex');
     pendingStates.set(state, { createdAt: Date.now() });
 

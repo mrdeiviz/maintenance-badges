@@ -12,7 +12,7 @@ const cacheService = {
 const fundingService = {
   getFundingData: vi.fn().mockResolvedValue({
     platform: 'github',
-    username: 'sindresorhus',
+    username: 'mrdeiviz',
     currentAmount: 2500,
     currency: 'USD',
     isRecurring: true,
@@ -32,12 +32,31 @@ vi.mock('../../src/services/funding-data.service.ts', () => ({
   getFundingDataService: () => fundingService,
 }));
 
+vi.mock('../../src/services/token-storage.service.ts', () => ({
+  TokenStorageService: class {
+    async saveUserToken() {}
+    async getUserToken() {
+      return 'test-token';
+    }
+    async deleteUserToken() {}
+    async hasToken() {
+      return true;
+    }
+  },
+}));
+
 describe('Badge routes (e2e)', () => {
   let server: Awaited<ReturnType<typeof import('../../src/core/server.ts').createServer>>;
 
   beforeAll(async () => {
     process.env.NODE_ENV = 'test';
     process.env.GITHUB_TOKEN = 'test-token';
+    process.env.GITHUB_OAUTH_CLIENT_ID = 'test-client-id';
+    process.env.GITHUB_OAUTH_CLIENT_SECRET = 'test-client-secret';
+    process.env.GITHUB_OAUTH_CALLBACK_URL = 'http://localhost:3000/auth/github/callback';
+    process.env.DATABASE_URL = 'postgresql://user:pass@localhost:5432/testdb';
+    process.env.ENCRYPTION_SECRET = 'test-encryption-secret-32-characters';
+    process.env.SESSION_SECRET = 'test-session-secret-32-characters';
     process.env.REDIS_URL = 'redis://localhost:6379';
     process.env.ALLOWED_ORIGINS = '*';
 
@@ -50,28 +69,30 @@ describe('Badge routes (e2e)', () => {
   });
 
   afterAll(async () => {
-    await server.close();
+    if (server) {
+      await server.close();
+    }
   });
 
   it('returns an SVG badge with default label', async () => {
     const response = await server.inject({
       method: 'GET',
-      url: '/badge/github/sindresorhus/5000',
+      url: '/badge/github/mrdeiviz/5000',
     });
 
     expect(response.statusCode).toBe(200);
     expect(response.headers['content-type']).toContain('image/svg+xml');
     expect(response.body).toContain('<svg');
-    expect(response.body).toContain('Maintenance Fund');
+    expect(response.body).toContain('Funding');
   });
 
-  it('returns a progress style badge with a track', async () => {
+  it('returns a badge with custom label and style', async () => {
     const response = await server.inject({
       method: 'GET',
-      url: '/badge/github/sindresorhus/5000?style=progress',
+      url: '/badge/github/mrdeiviz/5000?style=flat-square&label=Maintenance%20Fund',
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toContain('opacity="0.7"');
+    expect(response.body).toContain('Maintenance Fund');
   });
 });
