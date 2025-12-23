@@ -23,7 +23,7 @@ describe('BadgeGeneratorService', () => {
       expect(badge).toContain('<svg');
       expect(badge).toContain('</svg>');
       expect(badge).toContain('Funding');
-      expect(badge).toContain('$2.5k / $5.0k (50%)');
+      expect(badge).toContain('$2,500 / $5,000 (50%)');
     });
 
     it('should use custom label', () => {
@@ -49,7 +49,7 @@ describe('BadgeGeneratorService', () => {
 
       const badge = service.generateFundingBadge(options);
 
-      expect(badge).toContain('$3.5k / $10.0k');
+      expect(badge).toContain('$3,500 / $10.0k');
       expect(badge).toContain('(35%)');
     });
 
@@ -81,7 +81,7 @@ describe('BadgeGeneratorService', () => {
       expect(badge).toContain('(50%)');
     });
 
-    it('should apply correct color for critical progress (<20%)', () => {
+    it('should apply correct color for critical progress (<25%)', () => {
       const options: BadgeOptions = {
         label: 'Funding',
         current: 100,
@@ -94,7 +94,7 @@ describe('BadgeGeneratorService', () => {
       expect(badge).toContain('e74c3c'); // red
     });
 
-    it('should apply correct color for needs attention progress (20-40%)', () => {
+    it('should apply correct color for needs attention progress (25-50%)', () => {
       const options: BadgeOptions = {
         label: 'Funding',
         current: 300,
@@ -107,7 +107,7 @@ describe('BadgeGeneratorService', () => {
       expect(badge).toContain('e67e22'); // orange
     });
 
-    it('should apply correct color for moderate progress (40-60%)', () => {
+    it('should apply correct color for moderate progress (50-75%)', () => {
       const options: BadgeOptions = {
         label: 'Funding',
         current: 500,
@@ -117,33 +117,33 @@ describe('BadgeGeneratorService', () => {
 
       const badge = service.generateFundingBadge(options);
 
-      expect(badge).toContain('f39c12'); // yellow-orange
-    });
-
-    it('should apply correct color for good progress (60-80%)', () => {
-      const options: BadgeOptions = {
-        label: 'Funding',
-        current: 700,
-        goal: 1000,
-        style: 'flat',
-      };
-
-      const badge = service.generateFundingBadge(options);
-
       expect(badge).toContain('f1c40f'); // yellow
     });
 
-    it('should apply correct color for almost there progress (80-100%)', () => {
+    it('should apply correct color for good progress (75-100%)', () => {
       const options: BadgeOptions = {
         label: 'Funding',
-        current: 900,
+        current: 800,
         goal: 1000,
         style: 'flat',
       };
 
       const badge = service.generateFundingBadge(options);
 
-      expect(badge).toContain('2ecc71'); // green
+      expect(badge).toContain('97ca00'); // yellowgreen
+    });
+
+    it('should apply correct color for almost there progress (90-100%)', () => {
+      const options: BadgeOptions = {
+        label: 'Funding',
+        current: 950,
+        goal: 1000,
+        style: 'flat',
+      };
+
+      const badge = service.generateFundingBadge(options);
+
+      expect(badge).toContain('97ca00'); // yellowgreen
     });
 
     it('should apply correct color for goal reached (100-150%)', () => {
@@ -156,7 +156,7 @@ describe('BadgeGeneratorService', () => {
 
       const badge = service.generateFundingBadge(options);
 
-      expect(badge).toContain('27ae60'); // darker green
+      expect(badge).toContain('007ec6'); // blue
     });
 
     it('should apply correct color for exceeded goal (>150%)', () => {
@@ -231,7 +231,7 @@ describe('BadgeGeneratorService', () => {
 
       const badge = service.generateFundingBadge(options);
 
-      expect(badge).toContain('$0 / $1.0k (0%)');
+      expect(badge).toContain('$0 / $1,000 (0%)');
       expect(badge).toContain('e74c3c'); // red for critical
     });
 
@@ -245,8 +245,8 @@ describe('BadgeGeneratorService', () => {
 
       const badge = service.generateFundingBadge(options);
 
-      expect(badge).toContain('$1.0k / $1.0k (100%)');
-      expect(badge).toContain('27ae60'); // darker green
+      expect(badge).toContain('$1,000 / $1,000 (100%)');
+      expect(badge).toContain('44cc11'); // brightgreen for 100%
     });
   });
 
