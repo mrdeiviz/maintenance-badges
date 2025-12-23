@@ -83,16 +83,16 @@ describe('Badge routes (e2e)', () => {
     expect(response.statusCode).toBe(200);
     expect(response.headers['content-type']).toContain('image/svg+xml');
     expect(response.body).toContain('<svg');
-    expect(response.body).toContain('Maintenance Fund');
+    expect(response.body).toContain('Funding');
   });
 
-  it('returns a progress style badge with a track', async () => {
+  it('returns a badge with custom label and style', async () => {
     const response = await server.inject({
       method: 'GET',
-      url: '/badge/github/sindresorhus/5000?style=progress',
+      url: '/badge/github/sindresorhus/5000?style=flat-square&label=Maintenance%20Fund',
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toContain('opacity="0.7"');
+    expect(response.body).toContain('Maintenance Fund');
   });
 });
