@@ -10,6 +10,7 @@
     "start": "node dist/index.js",
     "check": "node scripts/check-setup.js",
     "test": "vitest",
+    "test:ci": "vitest --run --reporter=verbose",
     "test:coverage": "vitest --coverage",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write \"src/**/*.ts\""
