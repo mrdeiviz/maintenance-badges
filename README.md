@@ -1,65 +1,214 @@
-# Maintenance Badge
+# Maintenance Badge 💰
 
-> Dynamic SVG badges for open source maintenance funds - Twitch-style progress tracking for GitHub Sponsors
+**Show your GitHub Sponsors progress with beautiful, dynamic badges**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## The Problem
+<div align="center">
 
-Open source projects can display static sponsor logos, but there's no way to show **progress towards maintenance funds** with visual progress bars like Twitch/Kickstarter campaigns.
+### Example Badges
 
-**Maintenance Badge solves this** by providing dynamic SVG badges that show real-time maintenance fund progress with visual progress bars.
+**Basic Style**
+![Funding Badge](https://img.shields.io/badge/Funding-$2,500_/_$5,000_(50%25)-orange?style=flat)
 
-## 🚀 How It Works - OAuth Flow
+**Flat Square Style**
+![Funding Badge](https://img.shields.io/badge/Support_Us-$3,750_/_$5,000_(75%25)-yellow?style=flat-square)
 
-This service uses **GitHub OAuth** to securely access your sponsors data:
+**For The Badge Style**
+![Funding Badge](https://img.shields.io/badge/Monthly_Goal-$5,000_/_$5,000_(100%25)-brightgreen?style=for-the-badge)
 
-1. **Visit the service** and click "Connect with GitHub"
-2. **Authorize** the app to read your sponsors data
-3. **Get your badge URL** - we generate a unique badge for your account
-4. **Add to README** - paste the markdown into your project
+</div>
 
-Your GitHub token is encrypted and stored securely. The badge updates automatically every 5 minutes.
+---
 
-## Features
+## 🎯 What is this?
 
-- ✅ Dynamic SVG badges showing maintenance fund progress
-- ✅ Visual progress with percentage display
-- ✅ Smart color progression (red → orange → yellow → green → purple for exceeded goals)
-- ✅ Multiple badge styles (`flat`, `flat-square`, `for-the-badge`)
-- ✅ GitHub Sponsors integration with OAuth
-- ✅ Zero configuration - just add a URL to your README
-- ✅ Free and open source
+Display your GitHub Sponsors progress directly in your README with automatically updating badges. Perfect for open source projects that want to show their funding goals and progress.
 
-## Quick Start
+**Why use this?**
+- 📊 Show real-time progress towards your funding goals
+- 🎨 Looks great with automatic color changes (red → orange → yellow → green)
+- 🔄 Updates automatically every 5 minutes
+- 🆓 Completely free and open source
+- 🔒 Secure OAuth - no tokens to manage manually
 
-### For Users (Add Badge to Your Project)
+---
 
-1. **Visit the service** (e.g., `https://your-badge-service.com`)
-2. **Click "Connect with GitHub"** and authorize the app
-3. **Copy your badge URL** from the success page
-4. **Add to your README.md:**
+## 🚀 Get Started in 2 Minutes
 
-```markdown
-[![Maintenance](https://your-service.com/badge/github/YOUR_USERNAME/5000)](https://github.com/sponsors/YOUR_USERNAME)
+### 1️⃣ Connect Your GitHub Account
+
+Visit **[your-service-url.com]** and click **"Connect with GitHub"**
+
+<details>
+<summary>What permissions do you need?</summary>
+
+We only request permission to read your GitHub Sponsors data. Your token is encrypted and stored securely.
+
+</details>
+
+### 2️⃣ Get Your Badge
+
+After connecting, you'll receive your personal badge URL:
+
+```
+https://your-service.com/badge/github/YOUR_USERNAME/YOUR_GOAL
 ```
 
-Replace `5000` with your monthly funding goal in USD.
+Replace `YOUR_GOAL` with your monthly funding goal in USD (e.g., `5000` for $5,000/month)
 
-### Customize Your Badge
+### 3️⃣ Add to Your README
 
-Add query parameters to customize appearance:
+Copy and paste this into your README.md:
 
 ```markdown
-[![Maintenance](https://your-service.com/badge/github/YOUR_USERNAME/5000?style=for-the-badge&label=Support%20Us)](https://github.com/sponsors/YOUR_USERNAME)
+[![Maintenance Fund](https://your-service.com/badge/github/YOUR_USERNAME/5000)](https://github.com/sponsors/YOUR_USERNAME)
 ```
 
-**Parameters:**
-- `style`: `flat`, `flat-square`, `for-the-badge` (default: `flat`)
-- `label`: Custom label text (default: `Funding`)
-- `logo`: Icon from [simple-icons](https://simpleicons.org/)
-- `color`: Custom color (hex without `#`)
-- `refresh`: Force cache refresh (`true`/`false`)
+**That's it!** Your badge will now show your current funding progress and update automatically.
+
+---
+
+## 🎨 Customize Your Badge
+
+Make your badge match your project's style by adding URL parameters:
+
+### 🖼️ Change the Style
+
+```markdown
+<!-- Flat (default) -->
+[![Maintenance Fund](https://your-service.com/badge/github/YOUR_USERNAME/5000?style=flat)](...)
+
+<!-- Flat Square -->
+[![Maintenance Fund](https://your-service.com/badge/github/YOUR_USERNAME/5000?style=flat-square)](...)
+
+<!-- For The Badge (big and bold) -->
+[![Maintenance Fund](https://your-service.com/badge/github/YOUR_USERNAME/5000?style=for-the-badge)](...)
+```
+
+### ✏️ Change the Label
+
+```markdown
+<!-- Custom label -->
+[![Support](https://your-service.com/badge/github/YOUR_USERNAME/5000?label=Support%20Us)](...)
+```
+
+### 🎨 Add an Icon
+
+Use any icon from [Simple Icons](https://simpleicons.org/):
+
+```markdown
+<!-- With GitHub icon -->
+[![Maintenance](https://your-service.com/badge/github/YOUR_USERNAME/5000?logo=github)](...)
+
+<!-- With heart icon -->
+[![Maintenance](https://your-service.com/badge/github/YOUR_USERNAME/5000?logo=heart)](...)
+```
+
+### 🌈 Custom Color
+
+Override the automatic color progression with your own color:
+
+```markdown
+<!-- Pink badge -->
+[![Maintenance](https://your-service.com/badge/github/YOUR_USERNAME/5000?color=ff69b4)](...)
+```
+
+### 🔄 Force Refresh
+
+By default, badges are cached for 5 minutes. Force a refresh:
+
+```markdown
+[![Maintenance](https://your-service.com/badge/github/YOUR_USERNAME/5000?refresh=true)](...)
+```
+
+### 🎯 All Options Combined
+
+```markdown
+[![Support Us](https://your-service.com/badge/github/YOUR_USERNAME/5000?style=for-the-badge&label=Support%20Us&logo=heart&color=ff69b4)](https://github.com/sponsors/YOUR_USERNAME)
+```
+
+---
+
+## ❓ FAQ
+
+<details>
+<summary><b>How often does the badge update?</b></summary>
+
+Badges are cached for 5 minutes to protect GitHub's API limits. This means your funding progress will be reflected within 5 minutes of receiving a new sponsor.
+
+</details>
+
+<details>
+<summary><b>Is my GitHub token safe?</b></summary>
+
+Yes! Your OAuth token is encrypted using industry-standard encryption (AES-256-GCM) before being stored in the database. Only you can authorize or revoke access.
+
+</details>
+
+<details>
+<summary><b>What if I want to remove my badge?</b></summary>
+
+Simply remove the badge from your README. If you want to revoke access completely, visit the service and click "Disconnect GitHub" or revoke the app from your GitHub settings.
+
+</details>
+
+<details>
+<summary><b>Can I use this for multiple repositories?</b></summary>
+
+Yes! Once you've connected your GitHub account, you can use your badge URL in any repository.
+
+</details>
+
+<details>
+<summary><b>What happens if I don't have GitHub Sponsors enabled?</b></summary>
+
+The badge will show $0 raised and still work fine. It's a great way to show your funding goal even before you have sponsors!
+
+</details>
+
+<details>
+<summary><b>How do the colors work?</b></summary>
+
+Colors change automatically based on your progress:
+- 🔴 **Red**: 0-25%
+- 🟠 **Orange**: 25-50%
+- 🟡 **Yellow**: 50-75%
+- 🟢 **Green**: 75-100%
+- 🟣 **Purple**: Over 100% (you exceeded your goal!)
+
+</details>
+
+---
+
+## 🔐 Privacy & Security
+
+- ✅ We only request **read-only** access to your GitHub Sponsors data
+- ✅ All tokens are **encrypted at rest** using AES-256-GCM
+- ✅ We **never** see or store your sponsors' personal information
+- ✅ You can **revoke access** anytime from your GitHub settings
+- ✅ The service is **open source** - you can review the code
+
+---
+
+## 🤝 Support This Project
+
+If you find this useful, consider sponsoring the development:
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-❤️-ff69b4?style=for-the-badge)](https://github.com/sponsors/mrdeiviz)
+
+---
+
+## 📝 License
+
+MIT © mrdeiviz - Free to use for any purpose
+
+---
+
+## 🛠️ For Developers
+
+<details>
+<summary><b>Development Setup & API Documentation</b></summary>
 
 ## API Documentation
 
@@ -371,20 +520,24 @@ See `docs/DEPLOYMENT.md` for detailed deployment guides.
 - [ ] Analytics dashboard
 - [ ] Dark mode support
 
-## Contributing
+### Contributing
 
 Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) first.
 
-## License
-
-MIT © mrdeiviz
-
-## Acknowledgments
+### Acknowledgments
 
 - [Shields.io](https://shields.io/) - Badge generation inspiration
 - [badge-maker](https://www.npmjs.com/package/badge-maker) - SVG badge library
 - All the amazing open source maintainers who inspired this project
 
+</details>
+
 ---
 
+<div align="center">
+
 **Made with ❤️ for the open source community**
+
+[Report a Bug](https://github.com/mrdeiviz/maintenance-badges/issues) • [Request a Feature](https://github.com/mrdeiviz/maintenance-badges/issues) • [Contribute](CONTRIBUTING.md)
+
+</div>
