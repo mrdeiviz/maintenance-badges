@@ -163,8 +163,8 @@ Returns server health, cache metrics, and rate limit info.
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/yourusername/maintenance-badge.git
-cd maintenance-badge
+git clone https://github.com/yourusername/maintenance-badges.git
+cd maintenance-badges
 ```
 
 2. **Install dependencies:**
@@ -273,7 +273,7 @@ curl http://localhost:3000/badge/github/YOUR_USERNAME/5000
 ## Project Structure
 
 ```
-maintenance-badge/
+maintenance-badges/
 ├── src/
 │   ├── core/           # Core configuration and setup
 │   │   ├── server.ts   # Fastify server setup
@@ -377,7 +377,7 @@ Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md)
 
 ## License
 
-MIT © [Your Name]
+MIT © mrdeiviz
 
 ## Acknowledgments
 
