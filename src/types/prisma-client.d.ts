@@ -1,3 +1,6 @@
 declare module '@prisma/client' {
-  export * from '@prisma/client/.prisma/client/index';
+  export class PrismaClient {
+    constructor(options?: Record<string, unknown>);
+    [key: string]: unknown;
+  }
 }
